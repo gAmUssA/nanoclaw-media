@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.76 — 2026-11-15
+
+- chore: refresh the Tessl-generated ignore block (#104)
+
 ## 0.1.70 — 2026-10-22
 
 ### Changed — Preserve both Python interpreter lanes
