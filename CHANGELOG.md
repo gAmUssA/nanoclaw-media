@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.78 — 2026-11-17
+
+- chore(deps): make Renovate the only dependency scanner (#105)
+
 ## 0.1.77 — 2026-11-17
 
 - Update dependency ruff to v0.17.5 (#103)
