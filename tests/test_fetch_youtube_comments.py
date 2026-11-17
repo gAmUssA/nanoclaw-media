@@ -10,7 +10,7 @@ Locks down the native YouTube Data API v3 fetch contract (jbaruch/nanoclaw-admin
   - pagination follows nextPageToken
 
 The script reads YOUTUBE_API_BASE from the env, so a local fixture
-server stands in for googleapis.com. The script's clock is frozen at
+server stands in for youtube.googleapis.com. The script's clock is frozen at
 FROZEN_NOW via its `_utcnow` seam, and window fixtures are fixed
 offsets from it (recent = FROZEN_NOW-1h, old = FROZEN_NOW-8d), so the
 7-day filter is exercised with no dependence on the real wall clock.
@@ -140,6 +140,11 @@ def _run(module, capsys):
     rc = module.main(["--channel-id", CHANNEL, "--days", "7"])
     out = capsys.readouterr()
     return rc, out
+
+
+def test_default_api_base_uses_youtube_host(monkeypatch):
+    monkeypatch.delenv("YOUTUBE_API_BASE", raising=False)
+    assert _load().API_BASE == "https://youtube.googleapis.com/youtube/v3"
 
 
 def test_groups_recent_comments_by_video_and_filters_old(server, capsys):
