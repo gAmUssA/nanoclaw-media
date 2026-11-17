@@ -3,7 +3,21 @@
   "extends": [
     "config:recommended"
   ],
+  "mode": "full",
+  "schedule": ["before 6am on monday"],
+  "semanticCommits": "enabled",
+  "semanticCommitType": "chore",
+  "semanticCommitScope": "deps",
+  "prConcurrentLimit": 5,
   "packageRules": [
+    {
+      "matchUpdateTypes": ["minor", "patch", "digest"],
+      "groupName": "all non-major dependencies"
+    },
+    {
+      "matchUpdateTypes": ["major"],
+      "dependencyDashboardApproval": true
+    },
     {
       "description": "Keep Python 3.14 runtime coverage on its supported minor while allowing patch updates.",
       "matchManagers": [
