@@ -52,7 +52,9 @@ from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
 # rstrip the trailing slash so the `{API_BASE}/{path}` join never doubles.
-API_BASE = os.environ.get("YOUTUBE_API_BASE", "https://www.googleapis.com/youtube/v3").rstrip("/")
+API_BASE = os.environ.get("YOUTUBE_API_BASE", "https://youtube.googleapis.com/youtube/v3").rstrip(
+    "/"
+)
 PER_CALL_TIMEOUT_SECONDS = 60.0
 # Defensive page cap: a personal channel's last-week comments fit in one
 # 100-item page; cap pagination so a busy channel can't loop unbounded.

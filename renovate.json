@@ -2,5 +2,32 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "config:recommended"
+  ],
+  "mode": "full",
+  "schedule": ["before 6am on monday"],
+  "semanticCommits": "enabled",
+  "semanticCommitType": "chore",
+  "semanticCommitScope": "deps",
+  "prConcurrentLimit": 5,
+  "packageRules": [
+    {
+      "matchUpdateTypes": ["minor", "patch", "digest"],
+      "groupName": "all non-major dependencies"
+    },
+    {
+      "matchUpdateTypes": ["major"],
+      "dependencyDashboardApproval": true
+    },
+    {
+      "description": "Keep Python 3.14 runtime coverage on its supported minor while allowing patch updates.",
+      "matchManagers": [
+        "github-actions"
+      ],
+      "matchCurrentVersion": "/^3\\.14\\./",
+      "allowedVersions": "/^3\\.14\\./",
+      "matchDepNames": [
+        "python"
+      ]
+    }
   ]
 }

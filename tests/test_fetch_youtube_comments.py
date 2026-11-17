@@ -10,7 +10,7 @@ Locks down the native YouTube Data API v3 fetch contract (jbaruch/nanoclaw-admin
   - pagination follows nextPageToken
 
 The script reads YOUTUBE_API_BASE from the env, so a local fixture
-server stands in for googleapis.com. The script's clock is frozen at
+server stands in for youtube.googleapis.com. The script's clock is frozen at
 FROZEN_NOW via its `_utcnow` seam, and window fixtures are fixed
 offsets from it (recent = FROZEN_NOW-1h, old = FROZEN_NOW-8d), so the
 7-day filter is exercised with no dependence on the real wall clock.
@@ -22,6 +22,7 @@ import threading
 import urllib.parse
 from datetime import UTC, datetime, timedelta
 from http.server import BaseHTTPRequestHandler, HTTPServer
+from io import BytesIO
 from pathlib import Path
 from typing import cast
 
@@ -140,6 +141,26 @@ def _run(module, capsys):
     rc = module.main(["--channel-id", CHANNEL, "--days", "7"])
     out = capsys.readouterr()
     return rc, out
+
+
+def test_default_api_base_uses_youtube_host(monkeypatch, capsys):
+    monkeypatch.delenv("YOUTUBE_API_BASE", raising=False)
+    monkeypatch.setenv("YOUTUBE_API_KEY", "yt_test")
+    requests = []
+
+    def urlopen(request, *, timeout):
+        requests.append(urllib.parse.urlparse(request.full_url))
+        return BytesIO(b'{"items": []}')
+
+    monkeypatch.setattr("urllib.request.urlopen", urlopen)
+    rc, out = _run(_load(), capsys)
+
+    assert rc == 0, out.err
+    assert json.loads(out.out)["comment_count"] == 0
+    assert len(requests) == 1
+    assert requests[0].scheme == "https"
+    assert requests[0].hostname == "youtube.googleapis.com"
+    assert requests[0].path == "/youtube/v3/commentThreads"
 
 
 def test_groups_recent_comments_by_video_and_filters_old(server, capsys):

@@ -1,5 +1,27 @@
 # Changelog
 
+## 0.1.79 — 2026-11-17
+
+- fix(youtube): call the YouTube API on youtube.googleapis.com (#107)
+
+## 0.1.78 — 2026-11-17
+
+- chore(deps): make Renovate the only dependency scanner (#105)
+
+## 0.1.77 — 2026-11-17
+
+- Update dependency ruff to v0.17.5 (#103)
+
+## 0.1.76 — 2026-11-15
+
+- chore: refresh the Tessl-generated ignore block (#104)
+
+## 0.1.70 — 2026-10-22
+
+### Changed — Preserve both Python interpreter lanes
+
+Keep the runtime CI lane on Python 3.14.9 beside Python 3.15.1. Match Renovate’s Python dependency name and constrain its 3.14 lane to patch updates.
+
 ## 0.1.67 — 2026-10-19
 
 ### Fixed — trakt-watch-history passes the skill-review gate again

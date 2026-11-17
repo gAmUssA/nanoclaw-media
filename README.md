@@ -80,6 +80,8 @@ See [CHANGELOG.md](CHANGELOG.md) for version history.
 
 ## Development dependencies
 
+Renovate is this repository's only dependency scanner. [renovate.json](renovate.json) enables automatic PR creation before 06:00 UTC on Mondays, with up to five open dependency PRs and `chore(deps)` commits. Minor, patch and digest updates share one PR; major updates require approval in the Dependency Dashboard. Its native GitHub Actions manager covers action refs and the pinned reusable publish workflow.
+
 `tessl.json` declares this repo's dev-time plugin dependencies.
 
 - Every `jbaruch/*` dependency floats at `latest` (Runtime-Managed Manifest Carve-Out, `jbaruch/coding-policy: dependency-management`).
