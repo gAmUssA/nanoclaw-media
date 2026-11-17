@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.77 — 2026-11-17
+
+- Update dependency ruff to v0.17.5 (#103)
+
 ## 0.1.76 — 2026-11-15
 
 - chore: refresh the Tessl-generated ignore block (#104)
