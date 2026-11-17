@@ -22,6 +22,7 @@ import threading
 import urllib.parse
 from datetime import UTC, datetime, timedelta
 from http.server import BaseHTTPRequestHandler, HTTPServer
+from io import BytesIO
 from pathlib import Path
 from typing import cast
 
@@ -142,9 +143,24 @@ def _run(module, capsys):
     return rc, out
 
 
-def test_default_api_base_uses_youtube_host(monkeypatch):
+def test_default_api_base_uses_youtube_host(monkeypatch, capsys):
     monkeypatch.delenv("YOUTUBE_API_BASE", raising=False)
-    assert _load().API_BASE == "https://youtube.googleapis.com/youtube/v3"
+    monkeypatch.setenv("YOUTUBE_API_KEY", "yt_test")
+    requests = []
+
+    def urlopen(request, *, timeout):
+        requests.append(urllib.parse.urlparse(request.full_url))
+        return BytesIO(b'{"items": []}')
+
+    monkeypatch.setattr("urllib.request.urlopen", urlopen)
+    rc, out = _run(_load(), capsys)
+
+    assert rc == 0, out.err
+    assert json.loads(out.out)["comment_count"] == 0
+    assert len(requests) == 1
+    assert requests[0].scheme == "https"
+    assert requests[0].hostname == "youtube.googleapis.com"
+    assert requests[0].path == "/youtube/v3/commentThreads"
 
 
 def test_groups_recent_comments_by_video_and_filters_old(server, capsys):
