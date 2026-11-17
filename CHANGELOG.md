@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.79 — 2026-11-17
+
+- fix(youtube): call the YouTube API on youtube.googleapis.com (#107)
+
 ## 0.1.78 — 2026-11-17
 
 - chore(deps): make Renovate the only dependency scanner (#105)
